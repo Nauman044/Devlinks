@@ -401,6 +401,60 @@
     .mockup-cta{padding:26px 22px}
     .mockup-cta .btn{width:100%}
   }
+
+  /* reviews */
+  .rv-head{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap}
+  .rv-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:48px}
+  .rv-grid:empty{display:none}
+  .rv-card{background:var(--cloud);border:1px solid var(--line);border-radius:20px;padding:28px;display:flex;flex-direction:column;animation:fadeIn .5s ease both}
+  .rv-card .stars{display:flex;gap:2px;color:#F5B300}
+  .rv-card .stars svg{width:18px;height:18px}
+  .rv-card .stars .off{color:#D5DCE7}
+  .rv-card blockquote{margin-top:16px;font-size:1.02rem;line-height:1.65;color:var(--navy);flex:1}
+  .rv-card blockquote::before{content:"\201C";display:block;font-size:3rem;line-height:.6;color:var(--blue);font-weight:800;margin-bottom:8px}
+  .rv-who{display:flex;align-items:center;gap:12px;margin-top:22px;padding-top:18px;border-top:1px solid var(--line)}
+  .rv-av{width:42px;height:42px;border-radius:50%;background:var(--navy);color:#fff;display:grid;place-items:center;font-weight:700;flex:none}
+  .rv-who strong{display:block;font-size:.98rem}
+  .rv-who span{color:var(--gray);font-size:.88rem}
+  .rv-more{margin-top:28px;text-align:center}
+  .rv-empty{margin-top:48px;text-align:center;border:1.5px dashed var(--line);border-radius:22px;padding:48px 24px;background:var(--cloud)}
+  .rv-empty[hidden]{display:none}
+  .rv-empty-stars{display:flex;justify-content:center;gap:4px;color:#F5B300}
+  .rv-empty h3{font-size:1.35rem;margin-top:14px}
+  .rv-empty p{color:var(--gray);margin:8px auto 0;max-width:46ch}
+  .rv-form-wrap{margin-top:32px;max-width:760px}
+  .rv-form-wrap[hidden]{display:none}
+  #rv-form{box-shadow:none;border:1px solid var(--line);animation:fadeIn .3s ease both}
+  .rv-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .rv-rate{border:0;padding:0;margin:0 0 18px}
+  .rv-rate legend{font-weight:600;font-size:.94rem;margin-bottom:6px}
+  .rv-stars{display:inline-flex;flex-direction:row-reverse;gap:4px}
+  .rv-stars input{position:absolute;opacity:0;width:1px;height:1px}
+  .rv-stars label{cursor:pointer;color:#D5DCE7;margin:0;padding:2px;border-radius:6px;transition:color .12s,transform .12s}
+  .rv-stars label svg{width:30px;height:30px}
+  .rv-stars label:hover,.rv-stars label:hover ~ label,.rv-stars input:checked ~ label{color:#F5B300}
+  .rv-stars label:hover{transform:scale(1.12)}
+  .rv-stars input:focus-visible + label{outline:3px solid var(--cyan);outline-offset:2px}
+  .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+  .rv-hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+  .rv-error{color:#C62828;font-size:.94rem;margin:-6px 0 12px}
+  .rv-actions{display:flex;gap:12px;flex-wrap:wrap}
+  #rv-form .rv-actions .btn{width:auto}
+  .rv-cancel{background:transparent;border-color:var(--line);color:var(--navy)}
+  .rv-cancel:hover{border-color:var(--navy)}
+  #rv-form .form-note{text-align:left}
+  .rv-done{background:#fff;border:1px solid var(--line);border-radius:22px;padding:36px;text-align:center;animation:fadeIn .4s ease both}
+  .rv-done-ico{width:56px;height:56px;border-radius:50%;background:#E5F6EC;color:#1C8A45;display:inline-grid;place-items:center}
+  .rv-done h3{font-size:1.35rem;margin-top:14px}
+  .rv-done p{color:var(--gray);margin-top:6px}
+  @media (max-width:960px){ .rv-grid{grid-template-columns:1fr 1fr} }
+  @media (max-width:640px){
+    .rv-grid{grid-template-columns:1fr}
+    .rv-row{grid-template-columns:1fr;gap:0}
+    .rv-head .btn{width:100%}
+    .rv-card{padding:22px}
+    #rv-form .rv-actions .btn{flex:1}
+  }
   @media (prefers-reduced-motion:reduce){
     *,*::before,*::after{animation:none!important;transition:none!important}
     html{scroll-behavior:auto}
@@ -428,6 +482,7 @@
       <li><a href="#services">Services</a></li>
       <li><a href="#packages">Packages</a></li>
       <li><a href="#work">Work</a></li>
+      <li><a href="#reviews">Reviews</a></li>
       <li><a href="#process">Process</a></li>
       <li><a href="#faq">FAQ</a></li>
       <li><a href="#contact" class="btn btn-blue">Get a free mockup</a></li>
@@ -702,6 +757,60 @@
     </div>
   </section>
 
+  <!-- REVIEWS -->
+  <section class="block white" id="reviews">
+    <div class="wrap">
+      <div class="rv-head">
+        <div>
+          <span class="kicker">Reviews</span>
+          <h2>What our clients say.</h2>
+          <p class="lede">Real feedback from businesses we've worked with. Worked with DevLinks? We'd love to hear from you.</p>
+        </div>
+        <button class="btn btn-navy" type="button" id="rv-open" aria-expanded="false" aria-controls="rv-form-wrap">Write a review</button>
+      </div>
+
+      <div class="rv-grid" id="rv-grid" aria-live="polite"></div>
+      <div class="rv-empty" id="rv-empty">
+        <div class="rv-empty-stars" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="currentColor" d="M12 2.8l2.8 5.9 6.4.8-4.7 4.4 1.2 6.4L12 17.2l-5.7 3.1 1.2-6.4L2.8 9.5l6.4-.8z"/></svg><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="currentColor" d="M12 2.8l2.8 5.9 6.4.8-4.7 4.4 1.2 6.4L12 17.2l-5.7 3.1 1.2-6.4L2.8 9.5l6.4-.8z"/></svg><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="currentColor" d="M12 2.8l2.8 5.9 6.4.8-4.7 4.4 1.2 6.4L12 17.2l-5.7 3.1 1.2-6.4L2.8 9.5l6.4-.8z"/></svg><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="currentColor" d="M12 2.8l2.8 5.9 6.4.8-4.7 4.4 1.2 6.4L12 17.2l-5.7 3.1 1.2-6.4L2.8 9.5l6.4-.8z"/></svg><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="currentColor" d="M12 2.8l2.8 5.9 6.4.8-4.7 4.4 1.2 6.4L12 17.2l-5.7 3.1 1.2-6.4L2.8 9.5l6.4-.8z"/></svg></div>
+        <h3>Be the first to leave a review</h3>
+        <p>Worked with DevLinks? Share your experience and it will appear here once approved.</p>
+      </div>
+
+      <div class="rv-form-wrap" id="rv-form-wrap" hidden>
+        <form id="rv-form" novalidate>
+          <h3>Write a review</h3>
+          <div class="rv-row">
+            <div class="field"><label for="rv-name">Your name</label><input id="rv-name" name="name" maxlength="60" required autocomplete="name"></div>
+            <div class="field"><label for="rv-biz">Business and city</label><input id="rv-biz" name="business" maxlength="80" placeholder="Optional, e.g. ABC Restaurant, Lahore"></div>
+          </div>
+          <fieldset class="field rv-rate">
+            <legend>Your rating</legend>
+            <div class="rv-stars">
+              <input type="radio" id="rv-s5" name="rating" value="5" checked><label for="rv-s5" title="5 stars"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="currentColor" d="M12 2.8l2.8 5.9 6.4.8-4.7 4.4 1.2 6.4L12 17.2l-5.7 3.1 1.2-6.4L2.8 9.5l6.4-.8z"/></svg><span class="sr">5 stars</span></label>
+              <input type="radio" id="rv-s4" name="rating" value="4"><label for="rv-s4" title="4 stars"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="currentColor" d="M12 2.8l2.8 5.9 6.4.8-4.7 4.4 1.2 6.4L12 17.2l-5.7 3.1 1.2-6.4L2.8 9.5l6.4-.8z"/></svg><span class="sr">4 stars</span></label>
+              <input type="radio" id="rv-s3" name="rating" value="3"><label for="rv-s3" title="3 stars"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="currentColor" d="M12 2.8l2.8 5.9 6.4.8-4.7 4.4 1.2 6.4L12 17.2l-5.7 3.1 1.2-6.4L2.8 9.5l6.4-.8z"/></svg><span class="sr">3 stars</span></label>
+              <input type="radio" id="rv-s2" name="rating" value="2"><label for="rv-s2" title="2 stars"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="currentColor" d="M12 2.8l2.8 5.9 6.4.8-4.7 4.4 1.2 6.4L12 17.2l-5.7 3.1 1.2-6.4L2.8 9.5l6.4-.8z"/></svg><span class="sr">2 stars</span></label>
+              <input type="radio" id="rv-s1" name="rating" value="1"><label for="rv-s1" title="1 star"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="currentColor" d="M12 2.8l2.8 5.9 6.4.8-4.7 4.4 1.2 6.4L12 17.2l-5.7 3.1 1.2-6.4L2.8 9.5l6.4-.8z"/></svg><span class="sr">1 star</span></label>
+            </div>
+          </fieldset>
+          <div class="field"><label for="rv-text">Your review</label><textarea id="rv-text" name="review" maxlength="600" required placeholder="How was your experience working with DevLinks?"></textarea></div>
+          <div class="rv-hp" aria-hidden="true"><label for="rv-web">Website</label><input id="rv-web" name="website" tabindex="-1" autocomplete="off"></div>
+          <p class="rv-error" id="rv-error" role="alert" hidden></p>
+          <div class="rv-actions">
+            <button class="btn btn-blue" type="submit" id="rv-submit">Submit review</button>
+            <button class="btn rv-cancel" type="button" id="rv-cancel">Cancel</button>
+          </div>
+          <p class="form-note">Reviews appear on the website after a quick check.</p>
+        </form>
+        <div class="rv-done" id="rv-done" hidden>
+          <span class="rv-done-ico" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span>
+          <h3>Thank you for your review!</h3>
+          <p>It will appear on this page once it's approved.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- PROCESS -->
   <section class="block dark" id="process">
     <div class="wrap">
@@ -825,7 +934,7 @@
         </ul>
       </div>
       <nav aria-label="Footer">
-        <a href="#services">Services</a><a href="#packages">Packages</a><a href="#work">Work</a><a href="#faq">FAQ</a><a href="#contact">Contact</a>
+        <a href="#services">Services</a><a href="#packages">Packages</a><a href="#work">Work</a><a href="#reviews">Reviews</a><a href="#faq">FAQ</a><a href="#contact">Contact</a>
       </nav>
     </div>
     <div class="foot-bottom">
@@ -855,6 +964,90 @@
     const text = `Hi Nauman, I'm ${f.name.value}${biz}.\nI need: ${f.type.value}\n\n${f.msg.value}`;
     window.open(waLink(text), '_blank', 'noopener');
   });
+
+  // ---------- reviews ----------
+  // Paste your Google Apps Script web app URL here (see reviews-backend.gs).
+  // Leave it empty and new reviews are sent to WhatsApp instead.
+  const REVIEWS_API = "https://script.google.com/macros/s/AKfycbwpWaAp9KeWjnNhXipvMyXZhTJAayP5mL_5IHNA_KqrT7w7FoZF4iLDsvxv60HevllmnQ/exec";
+  const rvGrid = document.getElementById('rv-grid');
+  const rvEmpty = document.getElementById('rv-empty');
+  const rvWrap = document.getElementById('rv-form-wrap');
+  const rvForm = document.getElementById('rv-form');
+  const rvOpen = document.getElementById('rv-open');
+  const rvErr = document.getElementById('rv-error');
+  const rvDone = document.getElementById('rv-done');
+  const starSvg = '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2.8l2.8 5.9 6.4.8-4.7 4.4 1.2 6.4L12 17.2l-5.7 3.1 1.2-6.4L2.8 9.5l6.4-.8z"/></svg>';
+  const RV_SHOW = 6;
+
+  function rvCard(r){
+    const card = document.createElement('article'); card.className = 'rv-card';
+    const stars = document.createElement('div'); stars.className = 'stars';
+    const n = Math.max(1, Math.min(5, parseInt(r.rating) || 5));
+    stars.setAttribute('role','img'); stars.setAttribute('aria-label', n + ' out of 5 stars');
+    for (let i = 1; i <= 5; i++){ const s = document.createElement('span'); s.innerHTML = starSvg; if (i > n) s.className = 'off'; stars.appendChild(s); }
+    const q = document.createElement('blockquote'); q.textContent = String(r.text || '');
+    const who = document.createElement('div'); who.className = 'rv-who';
+    const av = document.createElement('span'); av.className = 'rv-av'; av.setAttribute('aria-hidden','true');
+    const name = String(r.name || 'Client'); av.textContent = name.trim().charAt(0).toUpperCase() || 'C';
+    const meta = document.createElement('div');
+    const nm = document.createElement('strong'); nm.textContent = name;
+    meta.appendChild(nm);
+    if (r.business){ const b = document.createElement('span'); b.textContent = String(r.business); meta.appendChild(b); }
+    who.append(av, meta); card.append(stars, q, who);
+    return card;
+  }
+  function rvRender(list){
+    rvGrid.innerHTML = '';
+    const old = document.getElementById('rv-more'); if (old) old.remove();
+    if (!list.length){ rvEmpty.hidden = false; return; }
+    rvEmpty.hidden = true;
+    list.forEach((r,i) => { const c = rvCard(r); if (i >= RV_SHOW) c.hidden = true; rvGrid.appendChild(c); });
+    if (list.length > RV_SHOW){
+      const wrap = document.createElement('div'); wrap.className = 'rv-more'; wrap.id = 'rv-more';
+      const btn = document.createElement('button'); btn.type = 'button'; btn.className = 'btn rv-cancel';
+      btn.textContent = `Show all ${list.length} reviews`;
+      btn.addEventListener('click', () => { rvGrid.querySelectorAll('.rv-card[hidden]').forEach(c => c.hidden = false); wrap.remove(); });
+      wrap.appendChild(btn); rvGrid.after(wrap);
+    }
+  }
+  async function rvLoad(){
+    if (!REVIEWS_API){ rvRender([]); return; }
+    try {
+      const res = await fetch(REVIEWS_API, {cache:'no-store'});
+      const data = await res.json();
+      rvRender(Array.isArray(data) ? data : []);
+    } catch (e) { rvRender([]); }
+  }
+  function rvToggle(open){
+    rvWrap.hidden = !open; rvOpen.setAttribute('aria-expanded', open);
+    if (open){ rvForm.hidden = false; rvDone.hidden = true; document.getElementById('rv-name').focus(); }
+  }
+  rvOpen.addEventListener('click', () => rvToggle(rvWrap.hidden));
+  document.getElementById('rv-cancel').addEventListener('click', () => { rvToggle(false); rvOpen.focus(); });
+  rvForm.addEventListener('submit', async e => {
+    e.preventDefault();
+    const f = rvForm, name = f.name.value.trim(), text = f.review.value.trim();
+    rvErr.hidden = true;
+    if (!name){ rvErr.textContent = 'Please enter your name.'; rvErr.hidden = false; f.name.focus(); return; }
+    if (text.length < 10){ rvErr.textContent = 'Please write at least a sentence about your experience.'; rvErr.hidden = false; f.review.focus(); return; }
+    if (f.website.value) return; // spam bot
+    const rating = f.querySelector('input[name="rating"]:checked').value;
+    const btn = document.getElementById('rv-submit'); btn.disabled = true; btn.textContent = 'Submitting...';
+    if (REVIEWS_API){
+      try {
+        await fetch(REVIEWS_API, {method:'POST', mode:'no-cors', body:new URLSearchParams({name, business:f.business.value.trim(), rating, review:text})});
+      } catch (err) {
+        rvErr.textContent = "Your review couldn't be sent. Check your connection and try again.";
+        rvErr.hidden = false; btn.disabled = false; btn.textContent = 'Submit review'; return;
+      }
+    } else {
+      const biz = f.business.value.trim();
+      window.open(waLink(`New review for DevLinks\nName: ${name}${biz ? '\nBusiness: ' + biz : ''}\nRating: ${rating}/5\n\n${text}`), '_blank', 'noopener');
+    }
+    f.reset(); btn.disabled = false; btn.textContent = 'Submit review';
+    rvForm.hidden = true; rvDone.hidden = false;
+  });
+  rvLoad();
 
   // package quote buttons open WhatsApp with the package name
   document.querySelectorAll('[data-wa-pkg]').forEach(a => {
