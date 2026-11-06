@@ -426,6 +426,14 @@
   .rv-grid::-webkit-scrollbar{display:none}
   .rv-grid:focus-visible{outline:3px solid var(--cyan);outline-offset:2px;border-radius:22px}
   .rv-grid:empty{display:none}
+  .rv-summary{display:flex;align-items:center;gap:14px;margin-top:30px}
+  .rv-summary[hidden]{display:none}
+  .rv-summary + .rv-grid{margin-top:22px}
+  .rv-avg{font-size:2.6rem;line-height:1;font-weight:800;color:var(--navy);letter-spacing:-.02em}
+  .rv-sum-stars{position:relative;display:flex;width:max-content;gap:2px;color:#D5DCE7}
+  .rv-sum-stars svg{width:20px;height:20px;flex:none;display:block}
+  .rv-sum-fill{position:absolute;top:0;bottom:0;left:0;overflow:hidden;display:flex;gap:2px;color:#F5B300}
+  .rv-count{display:block;margin-top:4px;color:var(--gray);font-size:.94rem}
   .rv-card{background:var(--cloud);border:1px solid var(--line);border-radius:20px;padding:28px;display:flex;flex-direction:column;flex:0 0 calc((100% - 48px)/3);min-width:0;scroll-snap-align:start;animation:fadeIn .5s ease both}
   .rv-card .stars{display:flex;gap:2px;color:#F5B300}
   .rv-card .stars svg{width:18px;height:18px}
@@ -806,6 +814,13 @@
         <button class="btn btn-navy" type="button" id="rv-open" aria-expanded="false" aria-controls="rv-form-wrap">Write a review</button>
       </div>
 
+      <div class="rv-summary" id="rv-summary" hidden>
+        <strong class="rv-avg" id="rv-avg"></strong>
+        <div>
+          <div class="rv-sum-stars" id="rv-sum-stars" role="img"></div>
+          <span class="rv-count" id="rv-count"></span>
+        </div>
+      </div>
       <div class="rv-grid" id="rv-grid" role="region" aria-label="Client reviews" tabindex="0"></div>
       <div class="rv-nav" id="rv-nav" hidden>
         <button class="rv-arrow" type="button" id="rv-prev" aria-label="Previous reviews"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
@@ -1018,14 +1033,17 @@
   const rvErr = document.getElementById('rv-error');
   const rvDone = document.getElementById('rv-done');
   const starSvg = '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2.8l2.8 5.9 6.4.8-4.7 4.4 1.2 6.4L12 17.2l-5.7 3.1 1.2-6.4L2.8 9.5l6.4-.8z"/></svg>';
+  const rvSummary = document.getElementById('rv-summary');
   const rvNav = document.getElementById('rv-nav');
   const rvPrev = document.getElementById('rv-prev');
   const rvNext = document.getElementById('rv-next');
 
+  const rvRating = r => Math.max(1, Math.min(5, parseInt(r.rating) || 5));
+
   function rvCard(r){
     const card = document.createElement('article'); card.className = 'rv-card';
     const stars = document.createElement('div'); stars.className = 'stars';
-    const n = Math.max(1, Math.min(5, parseInt(r.rating) || 5));
+    const n = rvRating(r);
     stars.setAttribute('role','img'); stars.setAttribute('aria-label', n + ' out of 5 stars');
     for (let i = 1; i <= 5; i++){ const s = document.createElement('span'); s.innerHTML = starSvg; if (i > n) s.className = 'off'; stars.appendChild(s); }
     const q = document.createElement('blockquote');
@@ -1047,6 +1065,18 @@
     if (r.business){ const b = document.createElement('span'); b.textContent = String(r.business); meta.appendChild(b); }
     who.append(av, meta); card.append(stars, q, more, who);
     return card;
+  }
+  // average rating and total number of reviews
+  function rvSummaryShow(list){
+    const avg = list.reduce((sum, r) => sum + rvRating(r), 0) / list.length;
+    const shown = avg.toFixed(1);
+    const stars = starSvg.repeat(5);
+    const box = document.getElementById('rv-sum-stars');
+    box.innerHTML = `${stars}<span class="rv-sum-fill" style="width:${avg / 5 * 100}%">${stars}</span>`;
+    box.setAttribute('aria-label', `Average rating ${shown} out of 5 stars`);
+    document.getElementById('rv-avg').textContent = shown;
+    document.getElementById('rv-count').textContent = `Based on ${list.length} ${list.length === 1 ? 'review' : 'reviews'}`;
+    rvSummary.hidden = false;
   }
   // show "View more" only on reviews that don't fit in 3 lines
   function rvFit(){
@@ -1073,8 +1103,9 @@
   addEventListener('resize', rvFit);
   function rvRender(list){
     rvGrid.innerHTML = '';
-    if (!list.length){ rvEmpty.hidden = false; rvNav.hidden = true; return; }
+    if (!list.length){ rvEmpty.hidden = false; rvNav.hidden = true; rvSummary.hidden = true; return; }
     rvEmpty.hidden = true;
+    rvSummaryShow(list);
     list.forEach(r => rvGrid.appendChild(rvCard(r)));
     rvFit();
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(rvFit);
